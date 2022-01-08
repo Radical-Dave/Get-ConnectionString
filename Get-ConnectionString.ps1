@@ -4,7 +4,7 @@
 #####################################################
 <#PSScriptInfo
 
-.VERSION 0.1
+.VERSION 0.2
 
 .GUID 602bc07e-a621-4738-8c27-0edf4a4cea8e
 
@@ -16,9 +16,9 @@
 
 .TAGS sitecore powershell local install iis solr
 
-.LICENSEURI https://github.com/SitecoreDave/SharedSitecore.SitecoreLocal/blob/main/LICENSE
+.LICENSEURI https://github.com/Radical-Dave/Get-ConnectionString/blob/main/LICENSE
 
-.PROJECTURI https://github.com/SitecoreDave/SharedSitecore.SitecoreLocal
+.PROJECTURI https://github.com/Radical-Dave/Get-ConnectionString
 
 .ICONURI
 
