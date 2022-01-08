@@ -4,7 +4,7 @@
 #####################################################
 <#PSScriptInfo
 
-.VERSION 0.3
+.VERSION 0.4
 
 .GUID 602bc07e-a621-4738-8c27-0edf4a4cea8e
 
@@ -81,12 +81,12 @@ begin {
 }
 process {
 	try {
-		if (!$path) {$path = Get-Location}
+		if (!$path -or $path -eq '.') {$path = Get-Location}
 		if($PSCmdlet.ShouldProcess($path)) {
 			$configPath = $path
 			if ($configPath) {
 				if (!(Test-Path $configPath -PathType Leaf)) { $configPath = "$path/app_config/connectionstrings.config" }
-				if (!Test-Path $configPath) { throw "ERROR $PSScriptName - invalid path:$path"}
+				if (!(Test-Path $configPath)) { throw "ERROR $PSScriptName - invalid path:$path"}
 				Write-Verbose "configPath:$configPath"
 				#$connectionStrings = (Get-Content $webConfig) -as [Xml]
 				[XML]$connectionStrings = Get-Content ($configPath)
