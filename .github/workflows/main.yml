@@ -1,0 +1,19 @@
+name: Get-ConnectionString
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  on-success:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test-ScriptFileInfo
+        run: Test-ScriptFileInfo ${{github.workflow}}.ps1
+
+      - name: Publish-Script
+        run: |
+          Publish-Script -Path ${{github.workflow}}.ps1 -NuGetApiKey ${{ secrets.PS_GALLERY_KEY }}
