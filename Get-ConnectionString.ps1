@@ -4,7 +4,7 @@
 #####################################################
 <#PSScriptInfo
 
-.VERSION 0.2
+.VERSION 0.3
 
 .GUID 602bc07e-a621-4738-8c27-0edf4a4cea8e
 
@@ -80,18 +80,21 @@ begin {
 	Write-Verbose "# $PSScriptRoot/$PSScriptName $($PSScriptVersion):$path $name $($PSCallingScript -eq '' ? '' : ' called by:')$PSCallingScript"
 }
 process {
-
 	try {
-		$configPath = $path
-		if ($configPath) {
-			if (!(Test-Path $configPath -PathType Leaf)) { $configPath = "$path/app_config/connectionstrings.config" }
-			Write-Verbose "configPath:$configPath"
-			#$connectionStrings = (Get-Content $webConfig) -as [Xml]
-			[XML]$connectionStrings = Get-Content ($configPath)
-			if ($connectionStrings) {
-				#$connectionString = $connectionStrings.connectionStrings.add | Where-Object name -eq $name
-				$connectionString = $connectionStrings.connectionStrings.SelectSingleNode("add[@name='" + $name + "']")
-				$results = $connectionString.connectionString
+		if (!$path) {$path = Get-Location}
+		if($PSCmdlet.ShouldProcess($path)) {
+			$configPath = $path
+			if ($configPath) {
+				if (!(Test-Path $configPath -PathType Leaf)) { $configPath = "$path/app_config/connectionstrings.config" }
+				if (!Test-Path $configPath) { throw "ERROR $PSScriptName - invalid path:$path"}
+				Write-Verbose "configPath:$configPath"
+				#$connectionStrings = (Get-Content $webConfig) -as [Xml]
+				[XML]$connectionStrings = Get-Content ($configPath)
+				if ($connectionStrings) {
+					#$connectionString = $connectionStrings.connectionStrings.add | Where-Object name -eq $name
+					$connectionString = $connectionStrings.connectionStrings.SelectSingleNode("add[@name='" + $name + "']")
+					$results = $connectionString.connectionString
+				}
 			}
 		}
 	}
